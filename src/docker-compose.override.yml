@@ -3,24 +3,31 @@ version: '3.4'
 services:
   catalogdb:
     container_name: catalogdb
+    image: mongo:latest
     restart: always
     ports:
       - "27017:27017"
     volumes:
       - mongo_data:/data/db
+    networks:
+      - mynetwork
     
   catalog.api:
     container_name: catalog.api
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=https://+:443;http://+:80
-      - "DefaultConnection:mongodb://catalogdb:27017"
+      - ASPNETCORE_URLS=http://+:443;http://+:80
+      - "DatabaseSettings:DefaultConnection=mongodb://catalogdb:27017"
     depends_on:
       - catalogdb
     ports:
-      - "80"
-      - "443"
-      -"8000:80"
-    volumes:
-      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
-      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+      - "8000:80"
+    networks:
+      - mynetwork
+
+networks:
+  mynetwork:
+    driver: bridge
+
+volumes:
+  mongo_data:

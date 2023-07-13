@@ -1,15 +1,7 @@
 version: '3.4'
-#Deploya todos los servicios de la aplicación o del entorno
+
 services:
-  #Servicio de base de datos
-  catalog.db:
-    image: mongo
   catalog.api:
-    image: ${DOCKER_REGISTRY-}catalogapi
     build:
       context: .
       dockerfile: Services/Catalog/Catalog.API/Dockerfile
-#los volumenes son los archivos que se guardan en el disco duro del host
-volumes:
-  mongo_data:
-      
