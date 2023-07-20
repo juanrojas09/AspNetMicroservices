@@ -31,7 +31,7 @@ namespace Catalog.API.Controllers
             var products = await _productRepositories.GetProducts();
             return Ok(products);
         }
-
+         
 
         [HttpGet("Id")]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
